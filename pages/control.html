@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم - نظام إدارة الطابور</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .control-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .control-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .control-header h1 {
+      color: white;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .control-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-card h3 {
+      color: #64748b;
+      font-size: 0.875rem;
+      margin: 0 0 0.5rem 0;
+      text-transform: uppercase;
+    }
+
+    .info-card .value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1e40af;
+    }
+
+    .control-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .control-btn {
+      padding: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .control-btn-primary {
+      background-color: #1e40af;
+      color: white;
+    }
+
+    .control-btn-primary:hover {
+      background-color: #1e3a8a;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .control-btn-success {
+      background-color: #16a34a;
+      color: white;
+    }
+
+    .control-btn-success:hover {
+      background-color: #15803d;
+    }
+
+    .control-btn-warning {
+      background-color: #ea580c;
+      color: white;
+    }
+
+    .control-btn-warning:hover {
+      background-color: #c2410c;
+    }
+
+    .control-btn-danger {
+      background-color: #dc2626;
+      color: white;
+    }
+
+    .control-btn-danger:hover {
+      background-color: #b91c1c;
+    }
+
+    .control-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .control-section h2 {
+      color: #1e40af;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 0.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #1e40af;
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #1e40af;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #1e3a8a;
+    }
+
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+
+    .status-display {
+      background: #f0f9ff;
+      border: 2px solid #0284c7;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .status-display h3 {
+      color: #0284c7;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .status-display .status-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0c4a6e;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #1e40af;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="control-container">
+    <!-- Back Link -->
+    <a href="../index.html" class="back-link">← العودة إلى الصفحة الرئيسية</a>
+
+    <!-- Header -->
+    <div class="control-header">
+      <h1>🎮 لوحة التحكم</h1>
+      <p>التحكم بالطوابير والنداء والتنبيهات</p>
+    </div>
+
+    <!-- Clinic Selection -->
+    <div class="control-section">
+      <h2>🏥 اختر العيادة</h2>
+      <div class="form-group">
+        <label>العيادة</label>
+        <select id="clinicSelect" onchange="selectClinic()">
+          <option value="">-- اختر عيادة --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>كلمة السر</label>
+        <input type="password" id="clinicPassword" placeholder="أدخل كلمة السر">
+      </div>
+      <button class="btn btn-primary" onclick="authenticateClinic()">🔓 دخول</button>
+    </div>
+
+    <!-- Current Status -->
+    <div id="statusSection" style="display: none;">
+      <div class="control-info">
+        <div class="info-card">
+          <h3>العيادة</h3>
+          <div class="value" id="currentClinicName">-</div>
+        </div>
+        <div class="info-card">
+          <h3>الرقم الحالي</h3>
+          <div class="value" id="currentNumber">٠</div>
+        </div>
+        <div class="info-card">
+          <h3>آخر نداء</h3>
+          <div class="value" id="lastCallTime">-</div>
+        </div>
+      </div>
+
+      <!-- Control Buttons -->
+      <div class="control-buttons">
+        <button class="control-btn control-btn-success" onclick="nextCustomer()">➡️ العميل التالي</button>
+        <button class="control-btn control-btn-warning" onclick="previousCustomer()">⬅️ العميل السابق</button>
+        <button class="control-btn control-btn-primary" onclick="repeatCall()">🔁 تكرار النداء</button>
+        <button class="control-btn control-btn-danger" onclick="resetClinic()">🔄 تصفير</button>
+        <button class="control-btn control-btn-primary" onclick="showCallSpecific()">📢 نداء رقم معين</button>
+        <button class="control-btn control-btn-warning" onclick="showEmergency()">🚨 طوارئ</button>
+        <button class="control-btn control-btn-danger" onclick="pauseClinic()">⏸️ إيقاف</button>
+        <button class="control-btn control-btn-success" onclick="resumeClinic()">▶️ استئناف</button>
+      </div>
+
+      <!-- Call Specific Customer -->
+      <div class="control-section" id="callSpecificSection" style="display: none;">
+        <h2>📢 نداء عميل معين</h2>
+        <div class="form-group">
+          <label>رقم العميل</label>
+          <input type="number" id="specificCustomerNumber" placeholder="أدخل رقم العميل" min="1">
+        </div>
+        <button class="btn btn-primary" onclick="callSpecificCustomer()">📢 نداء</button>
+        <button class="btn btn-secondary" onclick="hideCallSpecific()">إلغاء</button>
+      </div>
+
+      <!-- Emergency Alert -->
+      <div class="control-section" id="emergencySection" style="display: none;">
+        <h2>🚨 تنبيه طوارئ</h2>
+        <p style="color: #dc2626; font-weight: 600; margin-bottom: 1rem;">
+          ⚠️ هذا سيرسل تنبيه طوارئ فوري إلى جميع الشاشات
+        </p>
+        <button class="btn btn-danger" onclick="sendEmergency()">🚨 إرسال تنبيه طوارئ</button>
+        <button class="btn btn-secondary" onclick="hideEmergency()">إلغاء</button>
+      </div>
+
+      <!-- Transfer Customer -->
+      <div class="control-section">
+        <h2>🔄 تحويل عميل</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>رقم العميل</label>
+            <input type="number" id="transferCustomerNumber" placeholder="رقم العميل" min="1">
+          </div>
+          <div class="form-group">
+            <label>العيادة المقصودة</label>
+            <select id="transferClinic">
+              <option value="">-- اختر عيادة --</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="transferCustomer()">🔄 تحويل</button>
+      </div>
+
+      <!-- Logout -->
+      <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-secondary" onclick="logout()">🚪 تسجيل الخروج</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="../config/constants.js"></script>
+  <script src="../config/firebase-config.js"></script>
+  <script src="../js/firebase-helper.js"></script>
+  <script src="../js/audio-manager.js"></script>
+  <script src="../js/notification-manager.js"></script>
+  <script src="../js/arabic-numbers.js"></script>
+  <script src="../js/control-logic.js"></script>
+</body>
+</html>
