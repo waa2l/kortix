@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام إدارة الطابور - غرب المطار</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 4rem 2rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .hero h1 {
+      color: white;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 1rem;
+      color: #1e40af;
+    }
+
+    .links-section {
+      background: #f1f5f9;
+      padding: 3rem 2rem;
+      border-radius: 0.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .link-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .link-card:hover {
+      border-color: #1e40af;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .link-card a {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .link-card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #1e40af;
+    }
+
+    .link-card-title {
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 0.5rem;
+    }
+
+    .link-card-desc {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+
+    .footer {
+      background: #0f172a;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .footer p {
+      margin: 0.5rem 0;
+    }
+
+    .version {
+      font-size: 0.875rem;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="container">
+      <h1>🏥 نظام إدارة الطابور والعملاء</h1>
+      <p>مركز غرب المطار الطبي</p>
+      <p style="font-size: 1rem; opacity: 0.9;">نظام متكامل لإدارة الطوابير والعملاء والمرضى والأطباء</p>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Features Section -->
+    <section class="features">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>إدارة متقدمة</h3>
+        <p>إدارة شاملة للعيادات والعملاء والأطباء مع تقارير مفصلة</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <h3>واجهة سهلة</h3>
+        <p>واجهة مستخدم بسيطة وسهلة الاستخدام باللغة العربية</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔊</div>
+        <h3>نظام النداء</h3>
+        <p>نظام نداء متقدم مع ملفات صوتية وتنبيهات فورية</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">☁️</div>
+        <h3>Firebase</h3>
+        <p>قاعدة بيانات سحابية آمنة وموثوقة مع مزامنة فورية</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📺</div>
+        <h3>شاشات عرض</h3>
+        <p>شاشات عرض متعددة لعرض الطوابير والإعلانات</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <h3>أمان عالي</h3>
+        <p>نظام أمان متقدم مع مصادقة آمنة وتشفير البيانات</p>
+      </div>
+    </section>
+
+    <!-- Links Section -->
+    <section class="links-section">
+      <h2 style="text-align: center; margin-bottom: 2rem; color: #1e40af;">الصفحات الرئيسية</h2>
+      
+      <div class="links-grid">
+        <!-- Admin -->
+        <div class="link-card">
+          <a href="pages/admin.html">
+            <div class="link-card-icon">⚙️</div>
+            <div class="link-card-title">لوحة الإدارة</div>
+            <div class="link-card-desc">إدارة النظام والإعدادات</div>
+          </a>
+        </div>
+
+        <!-- Display -->
+        <div class="link-card">
+          <a href="pages/display.html">
+            <div class="link-card-icon">📺</div>
+            <div class="link-card-title">شاشة العرض</div>
+            <div class="link-card-desc">عرض الطوابير والإعلانات</div>
+          </a>
+        </div>
+
+        <!-- Control -->
+        <div class="link-card">
+          <a href="pages/control.html">
+            <div class="link-card-icon">🎮</div>
+            <div class="link-card-title">لوحة التحكم</div>
+            <div class="link-card-desc">التحكم بالطوابير والنداء</div>
+          </a>
+        </div>
+
+        <!-- Print -->
+        <div class="link-card">
+          <a href="pages/print.html">
+            <div class="link-card-icon">🖨️</div>
+            <div class="link-card-title">الطباعة</div>
+            <div class="link-card-desc">طباعة التذاكر والتقارير</div>
+          </a>
+        </div>
+
+        <!-- Customer -->
+        <div class="link-card">
+          <a href="pages/customer.html">
+            <div class="link-card-icon">👤</div>
+            <div class="link-card-title">صفحة العميل</div>
+            <div class="link-card-desc">تتبع الطابور والشكاوى</div>
+          </a>
+        </div>
+
+        <!-- Booking -->
+        <div class="link-card">
+          <a href="pages/booking.html">
+            <div class="link-card-icon">📅</div>
+            <div class="link-card-title">حجز الموعد</div>
+            <div class="link-card-desc">حجز مواعيد الزيارة</div>
+          </a>
+        </div>
+
+        <!-- Doctors -->
+        <div class="link-card">
+          <a href="pages/doctors.html">
+            <div class="link-card-icon">👨‍⚕️</div>
+            <div class="link-card-title">صفحة الأطباء</div>
+            <div class="link-card-desc">إدارة بيانات الأطباء</div>
+          </a>
+        </div>
+
+        <!-- Consultations -->
+        <div class="link-card">
+          <a href="pages/consultations.html">
+            <div class="link-card-icon">💬</div>
+            <div class="link-card-title">الاستشارات</div>
+            <div class="link-card-desc">الاستشارات الطبية</div>
+          </a>
+        </div>
+
+        <!-- Setup -->
+        <div class="link-card">
+          <a href="pages/setup.html">
+            <div class="link-card-icon">🔧</div>
+            <div class="link-card-title">إعداد النظام</div>
+            <div class="link-card-desc">إنشاء قاعدة البيانات</div>
+          </a>
+        </div>
+
+        <!-- About -->
+        <div class="link-card">
+          <a href="pages/about.html">
+            <div class="link-card-icon">ℹ️</div>
+            <div class="link-card-title">عن النظام</div>
+            <div class="link-card-desc">معلومات عن البرنامج</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section style="background: #f0f9ff; padding: 2rem; border-radius: 0.75rem; margin-bottom: 3rem;">
+      <h2 style="color: #1e40af; margin-bottom: 1rem;">🚀 البدء السريع</h2>
+      <ol style="margin-right: 2rem;">
+        <li style="margin-bottom: 1rem;">
+          <strong>أولاً:</strong> قم بزيارة صفحة <a href="pages/setup.html">إعداد النظام</a> لإنشاء قاعدة البيانات
+        </li>
+        <li style="margin-bottom: 1rem;">
+          <strong>ثانياً:</strong> قم بتسجيل الدخول إلى <a href="pages/admin.html">لوحة الإدارة</a> بالبيانات الافتراضية
+        </li>
+        <li style="margin-bottom: 1rem;">
+          <strong>ثالثاً:</strong> قم بإضافة العيادات والأطباء والشاشات
+        </li>
+        <li style="margin-bottom: 1rem;">
+          <strong>رابعاً:</strong> قم بتشغيل <a href="pages/display.html">شاشة العرض</a> و<a href="pages/control.html">لوحة التحكم</a>
+        </li>
+      </ol>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p><strong>نظام إدارة الطابور والعملاء</strong></p>
+    <p>مركز غرب المطار الطبي</p>
+    <p class="version">الإصدار 1.0.0 | تاريخ الإصدار: 2024-01-01</p>
+    <p style="margin-top: 1rem; font-size: 0.875rem;">© 2024 جميع الحقوق محفوظة</p>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="config/constants.js"></script>
+  <script src="config/firebase-config.js"></script>
+  <script src="js/arabic-numbers.js"></script>
+</body>
+</html>
