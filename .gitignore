@@ -1,0 +1,38 @@
+# Firebase
+config/firebase-config.js
+.firebaserc
+firebase-debug.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build
+dist/
+build/
+
+# Cache
+.cache/
+*.cache
+
+# Logs
+logs/
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
