@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صفحة العميل - نظام إدارة الطابور</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .customer-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .customer-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .customer-header h1 {
+      color: white;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .customer-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .customer-section h2 {
+      color: #1e40af;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 0.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #1e40af;
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #1e40af;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #1e3a8a;
+    }
+
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+
+    .status-card {
+      background: #f0f9ff;
+      border: 2px solid #0284c7;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .status-card h3 {
+      color: #0284c7;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .status-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0c4a6e;
+    }
+
+    .status-info {
+      font-size: 0.875rem;
+      color: #0c4a6e;
+      margin-top: 0.5rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #1e40af;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .btn-group .btn {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="customer-container">
+    <!-- Back Link -->
+    <a href="../index.html" class="back-link">← العودة إلى الصفحة الرئيسية</a>
+
+    <!-- Header -->
+    <div class="customer-header">
+      <h1>👤 صفحة العميل</h1>
+      <p>تتبع الطابور وتقديم الشكاوى والاقتراحات</p>
+    </div>
+
+    <!-- Queue Tracking -->
+    <div class="customer-section">
+      <h2>📊 تتبع الطابور</h2>
+      
+      <div class="form-group">
+        <label>اختر العيادة</label>
+        <select id="trackingClinic" onchange="updateQueueStatus()">
+          <option value="">-- اختر عيادة --</option>
+        </select>
+      </div>
+
+      <div id="queueStatus" style="display: none;">
+        <div class="status-card">
+          <h3>الرقم الحالي</h3>
+          <div class="status-value" id="currentQueueNumber">٠</div>
+          <div class="status-info" id="queueInfo">-</div>
+        </div>
+
+        <div class="form-group">
+          <label>رقمك في التذكرة</label>
+          <input type="number" id="ticketNumber" placeholder="أدخل رقمك" min="1">
+        </div>
+
+        <div class="form-group">
+          <label>البريد الإلكتروني (اختياري)</label>
+          <input type="email" id="customerEmail" placeholder="بريدك الإلكتروني">
+        </div>
+
+        <div class="form-group">
+          <label>رقم الهاتف (اختياري)</label>
+          <input type="tel" id="customerPhone" placeholder="رقم هاتفك">
+        </div>
+
+        <button class="btn btn-primary" onclick="registerTicket()">✅ تسجيل التذكرة</button>
+      </div>
+    </div>
+
+    <!-- Complaints and Suggestions -->
+    <div class="customer-section">
+      <h2>💬 الشكاوى والاقتراحات</h2>
+
+      <div class="form-group">
+        <label>الاسم (اختياري)</label>
+        <input type="text" id="complaintName" placeholder="أدخل اسمك">
+      </div>
+
+      <div class="form-group">
+        <label>رقم الهاتف (اختياري)</label>
+        <input type="tel" id="complaintPhone" placeholder="رقم هاتفك">
+      </div>
+
+      <div class="form-group">
+        <label>البريد الإلكتروني (اختياري)</label>
+        <input type="email" id="complaintEmail" placeholder="بريدك الإلكتروني">
+      </div>
+
+      <div class="form-group">
+        <label>النوع *</label>
+        <select id="complaintType" required>
+          <option value="">-- اختر نوع --</option>
+          <option value="complaint">شكوى</option>
+          <option value="suggestion">اقتراح</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>النص * (140 حرف على الأقل)</label>
+        <textarea id="complaintText" placeholder="أدخل نصك هنا..." minlength="140" required></textarea>
+        <small id="charCount" style="color: #64748b;">0 / 140</small>
+      </div>
+
+      <div class="form-group">
+        <label>ملاحظات إضافية (اختياري)</label>
+        <textarea id="complaintNotes" placeholder="ملاحظات إضافية..."></textarea>
+      </div>
+
+      <button class="btn btn-primary" onclick="submitComplaint()">📤 إرسال</button>
+    </div>
+
+    <!-- Success Message -->
+    <div id="successMessage" style="display: none; background: #dcfce7; border: 2px solid #16a34a; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem; color: #166534;">
+      <strong>✅ تم الإرسال بنجاح!</strong>
+      <p>شكراً لك على تقديم شكواك أو اقتراحك. سيتم مراجعته من قبل الإدارة.</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="../config/constants.js"></script>
+  <script src="../config/firebase-config.js"></script>
+  <script src="../js/firebase-helper.js"></script>
+  <script src="../js/notification-manager.js"></script>
+  <script src="../js/arabic-numbers.js"></script>
+  <script src="../js/customer-logic.js"></script>
+</body>
+</html>
