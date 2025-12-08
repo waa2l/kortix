@@ -4,15 +4,17 @@
  * Replace with your Firebase project credentials
  */
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
 
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyB2yjBGTqLmB2esmV-TeP0lrQT2U2cLRnI",
+  authDomain: "kortix-6a282.firebaseapp.com",
+  projectId: "kortix-6a282",
+  storageBucket: "kortix-6a282.firebasestorage.app",
+  messagingSenderId: "905150109250",
+  appId: "1:905150109250:web:c44648f1424bcfda723fdb",
+  measurementId: "G-XMLQ4DXPRV"
+};
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
