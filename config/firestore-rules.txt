@@ -1,0 +1,113 @@
+/**
+ * Firestore Security Rules
+ * انسخ هذه القواعد إلى Firestore Rules في Firebase Console
+ * Copy these rules to Firestore Rules in Firebase Console
+ */
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Admin users - full access
+    match /admins/{document=**} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds;
+    }
+    
+    // Settings - read by all authenticated users, write by admins only
+    match /settings/{document=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds;
+    }
+    
+    // Clinics - read by all, write by admins
+    match /clinics/{clinicId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds;
+      
+      // Clinic queue numbers
+      match /queue/{document=**} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null;
+      }
+    }
+    
+    // Doctors - read by all, write by admins and doctors themselves
+    match /doctors/{doctorId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds ||
+         request.auth.uid == doctorId);
+      
+      // Doctor attendance records
+      match /attendance/{document=**} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null && 
+          (request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds ||
+           request.auth.uid == doctorId);
+      }
+      
+      // Doctor requests
+      match /requests/{document=**} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null && request.auth.uid == doctorId;
+      }
+    }
+    
+    // Customers - read/write by themselves and admins
+    match /customers/{customerId} {
+      allow read: if request.auth != null && 
+        (request.auth.uid == customerId || 
+         request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds);
+      allow write: if request.auth != null && 
+        (request.auth.uid == customerId || 
+         request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds);
+      
+      // Customer consultations
+      match /consultations/{document=**} {
+        allow read: if request.auth != null && 
+          (request.auth.uid == customerId || 
+           request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds);
+        allow write: if request.auth != null && request.auth.uid == customerId;
+      }
+    }
+    
+    // Bookings - read by all, write by customers and admins
+    match /bookings/{bookingId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds ||
+         request.auth.uid == resource.data.customerId);
+    }
+    
+    // Complaints and Suggestions - write by anyone, read by admins
+    match /complaints/{document=**} {
+      allow read: if request.auth != null && 
+        request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds;
+      allow write: if request.auth != null;
+    }
+    
+    // Notifications - read by intended recipient
+    match /notifications/{notificationId} {
+      allow read: if request.auth != null && 
+        (request.auth.uid == resource.data.userId || 
+         request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds);
+      allow write: if request.auth != null && 
+        request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds;
+    }
+    
+    // Announcements - read by all, write by admins
+    match /announcements/{document=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        request.auth.uid in get(/databases/$(database)/documents/settings/admins).data.adminIds;
+    }
+    
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
