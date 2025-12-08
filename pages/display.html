@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>شاشة العرض - نظام إدارة الطابور</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    body {
+      background-color: #000;
+      color: white;
+      overflow: hidden;
+    }
+
+    .display-container {
+      display: grid;
+      grid-template-rows: 80px 1fr 60px;
+      height: 100vh;
+      gap: 0;
+    }
+
+    .display-header {
+      background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .display-header-left {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .display-header-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .display-header-time {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    .display-header-right {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .display-btn {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+    }
+
+    .display-btn:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .display-main {
+      display: grid;
+      grid-template-columns: 300px 1fr 400px;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: #000;
+    }
+
+    .display-left {
+      background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .display-center {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .display-right {
+      background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .clinic-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .clinic-card.active {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #fbbf24;
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+    }
+
+    .clinic-card.inactive {
+      opacity: 0.5;
+    }
+
+    .clinic-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .clinic-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .clinic-info {
+      font-size: 0.875rem;
+      opacity: 0.8;
+    }
+
+    .qr-code-card {
+      background: white;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .qr-code-card h3 {
+      color: #000;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .qr-code {
+      width: 100%;
+      height: auto;
+      border-radius: 0.25rem;
+    }
+
+    .doctors-card {
+      background: white;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+      flex: 1;
+    }
+
+    .doctors-card h3 {
+      color: #000;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .doctor-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 0.25rem;
+      background-color: #e2e8f0;
+    }
+
+    .video-player {
+      background: #000;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .video-player video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .display-footer {
+      background: #1e40af;
+      padding: 0.5rem 1rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .announcement-text {
+      font-size: 1.25rem;
+      font-weight: 500;
+      white-space: nowrap;
+      animation: scroll-left 15s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(-100%);
+      }
+    }
+
+    .screen-selector {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+    }
+
+    .screen-selector:focus {
+      outline: none;
+      border-color: white;
+    }
+
+    @media (max-width: 1200px) {
+      .display-main {
+        grid-template-columns: 1fr;
+      }
+
+      .display-left,
+      .display-right {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="display-container">
+    <!-- Header -->
+    <div class="display-header">
+      <div class="display-header-left">
+        <div class="display-header-title" id="centerName">🏥 غرب المطار</div>
+        <div class="display-header-time" id="currentTime">00:00:00</div>
+      </div>
+      <div class="display-header-right">
+        <select class="screen-selector" id="screenSelector" onchange="changeScreen()">
+          <option value="">-- اختر شاشة --</option>
+        </select>
+        <button class="display-btn" onclick="toggleFullscreen()">⛶ ملء الشاشة</button>
+        <button class="display-btn" onclick="zoomIn()">🔍+ تكبير</button>
+        <button class="display-btn" onclick="zoomOut()">🔍- تصغير</button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="display-main">
+      <!-- Left: Clinics List -->
+      <div class="display-left">
+        <h3 style="margin-bottom: 1rem;">العيادات</h3>
+        <div id="clinicsList"></div>
+      </div>
+
+      <!-- Center: Video Player -->
+      <div class="display-center">
+        <div class="video-player">
+          <video id="videoPlayer" controls style="display: none;"></video>
+          <div id="videoPlaceholder" style="width: 100%; height: 100%; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: #666;">
+            لا توجد فيديوهات متاحة
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: QR Code and Doctors -->
+      <div class="display-right">
+        <!-- QR Code -->
+        <div class="qr-code-card">
+          <h3>📱 ادخل من هنا</h3>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://example.com/customer" alt="QR Code" class="qr-code">
+        </div>
+
+        <!-- Doctors -->
+        <div class="doctors-card">
+          <h3>👨‍⚕️ الأطباء</h3>
+          <img src="https://via.placeholder.com/200x200?text=Doctor" alt="Doctor" class="doctor-image" id="doctorImage">
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer: Announcement -->
+    <div class="display-footer">
+      <div class="announcement-text" id="announcementText">
+        أهلا وهلا بكم في مركز غرب المطار الطبي - نرجو الانتظار بالاستراحة
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="../config/constants.js"></script>
+  <script src="../config/firebase-config.js"></script>
+  <script src="../js/firebase-helper.js"></script>
+  <script src="../js/audio-manager.js"></script>
+  <script src="../js/notification-manager.js"></script>
+  <script src="../js/arabic-numbers.js"></script>
+  <script src="../js/display-logic.js"></script>
+</body>
+</html>
