@@ -1,0 +1,25 @@
+{
+  "name": "clinic-queue-system",
+  "version": "1.0.0",
+  "description": "نظام إدارة الطابور والعملاء للعيادات - Clinic Queue Management System",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "git push origin main"
+  },
+  "keywords": [
+    "clinic",
+    "queue",
+    "management",
+    "firebase",
+    "arabic"
+  ],
+  "author": "Clinic Management Team",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^10.0.0",
+    "tailwindcss": "^3.3.0"
+  },
+  "devDependencies": {}
+}
