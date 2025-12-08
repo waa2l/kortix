@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إعداد النظام - نظام إدارة الطابور</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .setup-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .setup-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .setup-header h1 {
+      color: #1e40af;
+      margin-bottom: 0.5rem;
+    }
+
+    .setup-steps {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .setup-step {
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      border-left: 4px solid #1e40af;
+    }
+
+    .setup-step h3 {
+      color: #1e40af;
+      margin-bottom: 1rem;
+    }
+
+    .setup-step p {
+      margin-bottom: 1rem;
+      color: #64748b;
+    }
+
+    .setup-step ul {
+      margin-right: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .setup-step li {
+      margin-bottom: 0.5rem;
+      color: #64748b;
+    }
+
+    .setup-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .action-btn {
+      padding: 1rem;
+      text-align: center;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .action-btn-primary {
+      background-color: #1e40af;
+      color: white;
+    }
+
+    .action-btn-primary:hover {
+      background-color: #1e3a8a;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-btn-secondary {
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .action-btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+
+    .status-message {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .status-message.success {
+      background-color: #dcfce7;
+      color: #166534;
+      border-left: 4px solid #16a34a;
+      display: block;
+    }
+
+    .status-message.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid #dc2626;
+      display: block;
+    }
+
+    .status-message.info {
+      background-color: #e0f2fe;
+      color: #0c4a6e;
+      border-left: 4px solid #0284c7;
+      display: block;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background-color: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: #16a34a;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .firebase-config {
+      background: #f0f9ff;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #bae6fd;
+    }
+
+    .firebase-config h4 {
+      color: #0284c7;
+      margin-bottom: 1rem;
+    }
+
+    .config-input {
+      margin-bottom: 1rem;
+    }
+
+    .config-input label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .config-input input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #bae6fd;
+      border-radius: 0.5rem;
+      font-family: monospace;
+      font-size: 0.875rem;
+    }
+
+    .config-input input:focus {
+      outline: none;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+    }
+
+    .checklist {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #e2e8f0;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .checklist-item:last-child {
+      border-bottom: none;
+    }
+
+    .checklist-checkbox {
+      width: 20px;
+      height: 20px;
+      margin-right: 1rem;
+      cursor: pointer;
+    }
+
+    .checklist-label {
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .checklist-status {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #1e40af;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="setup-container">
+    <!-- Back Link -->
+    <a href="../index.html" class="back-link">← العودة إلى الصفحة الرئيسية</a>
+
+    <!-- Header -->
+    <div class="setup-header">
+      <h1>🔧 إعداد النظام</h1>
+      <p>إنشاء وتهيئة قاعدة البيانات والإعدادات الأساسية</p>
+    </div>
+
+    <!-- Status Messages -->
+    <div id="statusMessage" class="status-message"></div>
+
+    <!-- Firebase Configuration -->
+    <div class="firebase-config">
+      <h4>⚙️ إعدادات Firebase</h4>
+      <p style="margin-bottom: 1rem; color: #0c4a6e;">أدخل بيانات Firebase Project الخاص بك:</p>
+      
+      <div class="config-input">
+        <label for="apiKey">API Key</label>
+        <input type="text" id="apiKey" placeholder="YOUR_API_KEY">
+      </div>
+
+      <div class="config-input">
+        <label for="authDomain">Auth Domain</label>
+        <input type="text" id="authDomain" placeholder="YOUR_PROJECT.firebaseapp.com">
+      </div>
+
+      <div class="config-input">
+        <label for="projectId">Project ID</label>
+        <input type="text" id="projectId" placeholder="YOUR_PROJECT_ID">
+      </div>
+
+      <div class="config-input">
+        <label for="storageBucket">Storage Bucket</label>
+        <input type="text" id="storageBucket" placeholder="YOUR_PROJECT.appspot.com">
+      </div>
+
+      <div class="config-input">
+        <label for="messagingSenderId">Messaging Sender ID</label>
+        <input type="text" id="messagingSenderId" placeholder="YOUR_MESSAGING_SENDER_ID">
+      </div>
+
+      <div class="config-input">
+        <label for="appId">App ID</label>
+        <input type="text" id="appId" placeholder="YOUR_APP_ID">
+      </div>
+
+      <button class="action-btn action-btn-secondary" onclick="saveFirebaseConfig()">
+        💾 حفظ إعدادات Firebase
+      </button>
+    </div>
+
+    <!-- Setup Steps -->
+    <div class="setup-steps">
+      <div class="setup-step">
+        <h3>📋 الخطوة 1: التحقق من Firebase</h3>
+        <p>تأكد من أن Firebase Project الخاص بك يحتوي على:</p>
+        <ul>
+          <li>✓ Firestore Database (في وضع الإنتاج)</li>
+          <li>✓ Realtime Database (اختياري)</li>
+          <li>✓ Authentication (Email/Password)</li>
+          <li>✓ Security Rules (تم تحديثها)</li>
+        </ul>
+      </div>
+
+      <div class="setup-step">
+        <h3>🗄️ الخطوة 2: إنشاء قاعدة البيانات</h3>
+        <p>انقر على الزر أدناه لإنشاء جميع المجموعات والبيانات الافتراضية:</p>
+        <button class="action-btn action-btn-primary" onclick="initializeDatabase()">
+          🚀 إنشاء قاعدة البيانات
+        </button>
+      </div>
+
+      <div class="setup-step">
+        <h3>👤 الخطوة 3: إنشاء حساب المسؤول</h3>
+        <p>قم بإنشاء حساب مسؤول للدخول إلى لوحة الإدارة:</p>
+        <div style="margin-top: 1rem;">
+          <div class="config-input">
+            <label for="adminEmail">البريد الإلكتروني</label>
+            <input type="email" id="adminEmail" placeholder="admin@example.com">
+          </div>
+          <div class="config-input">
+            <label for="adminPassword">كلمة المرور</label>
+            <input type="password" id="adminPassword" placeholder="••••••••">
+          </div>
+          <button class="action-btn action-btn-primary" onclick="createAdminAccount()">
+            👤 إنشاء حساب المسؤول
+          </button>
+        </div>
+      </div>
+
+      <div class="setup-step">
+        <h3>✅ الخطوة 4: التحقق من الإعداد</h3>
+        <p>تحقق من أن جميع المكونات تم إعدادها بشكل صحيح:</p>
+        <div class="checklist" id="setupChecklist">
+          <div class="checklist-item">
+            <input type="checkbox" class="checklist-checkbox" id="check1" disabled>
+            <label class="checklist-label" for="check1">Firebase Config تم حفظه</label>
+            <span class="checklist-status">⏳</span>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" class="checklist-checkbox" id="check2" disabled>
+            <label class="checklist-label" for="check2">قاعدة البيانات تم إنشاؤها</label>
+            <span class="checklist-status">⏳</span>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" class="checklist-checkbox" id="check3" disabled>
+            <label class="checklist-label" for="check3">حساب المسؤول تم إنشاؤه</label>
+            <span class="checklist-status">⏳</span>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" class="checklist-checkbox" id="check4" disabled>
+            <label class="checklist-label" for="check4">Security Rules تم تحديثها</label>
+            <span class="checklist-status">⏳</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="setup-actions">
+      <button class="action-btn action-btn-primary" onclick="goToAdmin()">
+        ✅ الذهاب إلى لوحة الإدارة
+      </button>
+      <button class="action-btn action-btn-secondary" onclick="goToHome()">
+        🏠 العودة للصفحة الرئيسية
+      </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div style="margin-top: 2rem;">
+      <p style="margin-bottom: 0.5rem; font-weight: 500;">تقدم الإعداد:</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <p style="text-align: center; color: #64748b; font-size: 0.875rem;">
+        <span id="progressText">0%</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="../config/constants.js"></script>
+  <script src="../config/firebase-config.js"></script>
+  <script src="../js/firebase-helper.js"></script>
+  <script src="../js/arabic-numbers.js"></script>
+  <script src="../js/setup-logic.js"></script>
+</body>
+</html>
