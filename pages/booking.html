@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حجز الموعد - نظام إدارة الطابور</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .booking-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .booking-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .booking-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #1e40af;
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #1e40af;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #1e3a8a;
+    }
+
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-group .btn {
+      flex: 1;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #1e40af;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .shift-info {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+      color: #0c4a6e;
+    }
+  </style>
+</head>
+<body>
+  <div class="booking-container">
+    <!-- Back Link -->
+    <a href="../index.html" class="back-link">← العودة إلى الصفحة الرئيسية</a>
+
+    <!-- Header -->
+    <div class="booking-header">
+      <h1>📅 حجز الموعد</h1>
+      <p>احجز موعدك في العيادة المفضلة</p>
+    </div>
+
+    <!-- Booking Form -->
+    <div class="booking-form">
+      <div class="shift-info">
+        <strong>⏰ أوقات العمل:</strong><br>
+        الشيفت الصباحي: من 8 صباحاً إلى 2 ظهراً<br>
+        الشيفت المسائي: من 2 ظهراً إلى 8 مساءً
+      </div>
+
+      <form onsubmit="submitBooking(event)">
+        <!-- Personal Information -->
+        <h3 style="color: #1e40af; margin-bottom: 1rem;">البيانات الشخصية</h3>
+
+        <div class="form-group">
+          <label>الاسم الرباعي *</label>
+          <input type="text" id="fullName" placeholder="أدخل اسمك الرباعي" required>
+        </div>
+
+        <div class="form-group">
+          <label>الرقم القومي *</label>
+          <input type="text" id="nationalId" placeholder="أدخل الرقم القومي" pattern="[0-9]{14}" required>
+        </div>
+
+        <div class="form-group">
+          <label>رقم الهاتف *</label>
+          <input type="tel" id="phone" placeholder="أدخل رقم الهاتف" pattern="[0-9]{11}" required>
+        </div>
+
+        <!-- Booking Information -->
+        <h3 style="color: #1e40af; margin-bottom: 1rem; margin-top: 1.5rem;">بيانات الحجز</h3>
+
+        <div class="form-group">
+          <label>العيادة *</label>
+          <select id="clinic" required>
+            <option value="">-- اختر عيادة --</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>التاريخ المطلوب *</label>
+            <input type="date" id="bookingDate" required>
+          </div>
+
+          <div class="form-group">
+            <label>الشيفت *</label>
+            <select id="shift" required>
+              <option value="">-- اختر شيفت --</option>
+              <option value="morning">صباحي (8 ص - 2 م)</option>
+              <option value="evening">مسائي (2 م - 8 م)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>سبب الزيارة *</label>
+          <input type="text" id="visitReason" placeholder="أدخل سبب الزيارة" required>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary">✅ حجز الموعد</button>
+          <button type="reset" class="btn btn-secondary">🔄 مسح</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="../config/constants.js"></script>
+  <script src="../config/firebase-config.js"></script>
+  <script src="../js/firebase-helper.js"></script>
+  <script src="../js/notification-manager.js"></script>
+  <script src="../js/arabic-numbers.js"></script>
+  <script src="../js/booking-logic.js"></script>
+</body>
+</html>
