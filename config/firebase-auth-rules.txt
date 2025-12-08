@@ -1,0 +1,36 @@
+/**
+ * Firebase Authentication Rules
+ * استخدم هذه الإعدادات في Firebase Console > Authentication
+ * Use these settings in Firebase Console > Authentication
+ */
+
+// Authentication Methods to Enable:
+// 1. Email/Password - للمسؤولين والأطباء
+// 2. Anonymous - للعملاء (اختياري)
+
+// Email/Password Configuration:
+// - Allow users to sign up: YES
+// - Allow password reset: YES
+// - Email verification: OPTIONAL (يمكن تفعيله لاحقاً)
+
+// User Management:
+// - Create users manually in Firebase Console
+// - Or use the setup page to create users programmatically
+
+// Custom Claims (for role-based access):
+// Admin users should have custom claim: { role: "admin" }
+// Doctor users should have custom claim: { role: "doctor" }
+// Customer users should have custom claim: { role: "customer" }
+
+// Example Firebase Admin SDK code to set custom claims:
+/*
+const admin = require('firebase-admin');
+
+// Set admin role
+admin.auth().setCustomUserClaims(uid, { role: 'admin' })
+  .then(() => console.log('Custom claims set for admin'));
+
+// Set doctor role
+admin.auth().setCustomUserClaims(uid, { role: 'doctor' })
+  .then(() => console.log('Custom claims set for doctor'));
+*/
