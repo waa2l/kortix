@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة الإدارة - نظام إدارة الطابور</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .admin-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 100vh;
+      background-color: #f8fafc;
+    }
+
+    .admin-sidebar {
+      background-color: #0f172a;
+      color: white;
+      padding: 2rem 0;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      overflow-y: auto;
+      direction: rtl;
+    }
+
+    .admin-sidebar-header {
+      padding: 0 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .admin-sidebar-header h2 {
+      color: white;
+      font-size: 1.25rem;
+      margin: 0;
+    }
+
+    .admin-sidebar-menu {
+      list-style: none;
+    }
+
+    .admin-sidebar-menu li {
+      margin: 0;
+    }
+
+    .admin-sidebar-menu a {
+      display: block;
+      padding: 1rem 1.5rem;
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-right: 3px solid transparent;
+    }
+
+    .admin-sidebar-menu a:hover,
+    .admin-sidebar-menu a.active {
+      background-color: #1e293b;
+      color: white;
+      border-right-color: #1e40af;
+    }
+
+    .admin-main {
+      margin-right: 250px;
+      padding: 2rem;
+    }
+
+    .admin-header {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .admin-header h1 {
+      margin: 0;
+      color: #1e40af;
+    }
+
+    .admin-user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .admin-user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #1e40af;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .admin-content {
+      display: none;
+    }
+
+    .admin-content.active {
+      display: block;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .settings-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .settings-card h3 {
+      color: #1e40af;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #1e40af;
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #1e40af;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #1e3a8a;
+    }
+
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+
+    .btn-danger {
+      background-color: #dc2626;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #b91c1c;
+    }
+
+    .table-container {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background-color: #f1f5f9;
+    }
+
+    th {
+      padding: 1rem;
+      text-align: right;
+      font-weight: 600;
+      border-bottom: 2px solid #e2e8f0;
+      color: #1e293b;
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .action-btn-edit {
+      background-color: #0284c7;
+      color: white;
+    }
+
+    .action-btn-edit:hover {
+      background-color: #0369a1;
+    }
+
+    .action-btn-delete {
+      background-color: #dc2626;
+      color: white;
+    }
+
+    .action-btn-delete:hover {
+      background-color: #b91c1c;
+    }
+
+    .logout-btn {
+      background-color: #dc2626;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #b91c1c;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      color: #64748b;
+      font-size: 0.875rem;
+      margin: 0 0 0.5rem 0;
+      text-transform: uppercase;
+    }
+
+    .stat-card .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e40af;
+    }
+
+    @media (max-width: 768px) {
+      .admin-container {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        margin-bottom: 1rem;
+      }
+
+      .admin-main {
+        margin-right: 0;
+      }
+
+      .admin-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <h2>⚙️ الإدارة</h2>
+      </div>
+      <ul class="admin-sidebar-menu">
+        <li><a href="#" onclick="showSection('dashboard')" class="menu-link active">📊 لوحة التحكم</a></li>
+        <li><a href="#" onclick="showSection('general')" class="menu-link">⚙️ الإعدادات العامة</a></li>
+        <li><a href="#" onclick="showSection('clinics')" class="menu-link">🏥 العيادات</a></li>
+        <li><a href="#" onclick="showSection('screens')" class="menu-link">📺 الشاشات</a></li>
+        <li><a href="#" onclick="showSection('calls')" class="menu-link">🔊 إعدادات النداء</a></li>
+        <li><a href="#" onclick="showSection('doctors')" class="menu-link">👨‍⚕️ الأطباء</a></li>
+        <li><a href="#" onclick="showSection('users')" class="menu-link">👥 المستخدمون</a></li>
+        <li><a href="#" onclick="logout()" class="menu-link" style="color: #dc2626;">🚪 تسجيل الخروج</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+      <!-- Header -->
+      <div class="admin-header">
+        <h1>🏥 لوحة إدارة النظام</h1>
+        <div class="admin-user-info">
+          <div>
+            <div style="font-weight: 600;" id="userName">مسؤول النظام</div>
+            <div style="font-size: 0.875rem; color: #64748b;" id="userEmail">admin@example.com</div>
+          </div>
+          <div class="admin-user-avatar" id="userAvatar">م</div>
+        </div>
+      </div>
+
+      <!-- Dashboard Section -->
+      <div id="dashboard" class="admin-content active">
+        <h2>📊 لوحة التحكم</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>العيادات</h3>
+            <div class="stat-value" id="clinicsCount">0</div>
+          </div>
+          <div class="stat-card">
+            <h3>الأطباء</h3>
+            <div class="stat-value" id="doctorsCount">0</div>
+          </div>
+          <div class="stat-card">
+            <h3>الشاشات</h3>
+            <div class="stat-value" id="screensCount">0</div>
+          </div>
+          <div class="stat-card">
+            <h3>الحجوزات</h3>
+            <div class="stat-value" id="bookingsCount">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- General Settings Section -->
+      <div id="general" class="admin-content">
+        <h2>⚙️ الإعدادات العامة</h2>
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h3>معلومات المركز</h3>
+            <div class="form-group">
+              <label>اسم المركز</label>
+              <input type="text" id="centerName" value="غرب المطار">
+            </div>
+            <div class="form-group">
+              <label>عدد العيادات</label>
+              <input type="number" id="totalClinics" value="10" min="1">
+            </div>
+            <div class="form-group">
+              <label>عدد الشاشات</label>
+              <input type="number" id="totalScreens" value="5" min="1">
+            </div>
+            <button class="btn btn-primary" onclick="saveGeneralSettings()">💾 حفظ</button>
+          </div>
+
+          <div class="settings-card">
+            <h3>إعدادات الإعلانات</h3>
+            <div class="form-group">
+              <label>سرعة الشريط الإخباري (بكسل/ثانية)</label>
+              <input type="number" id="announcementSpeed" value="50" min="10" max="200">
+            </div>
+            <div class="form-group">
+              <label>مدة عرض التنبيه (ميلي ثانية)</label>
+              <input type="number" id="notificationDuration" value="5000" min="1000" max="30000">
+            </div>
+            <div class="form-group">
+              <label>سرعة النطق</label>
+              <input type="number" id="ttsSpeed" value="1" min="0.5" max="2" step="0.1">
+            </div>
+            <button class="btn btn-primary" onclick="saveAnnouncementSettings()">💾 حفظ</button>
+          </div>
+
+          <div class="settings-card">
+            <h3>إعدادات التخزين</h3>
+            <div class="form-group">
+              <label>مسار ملفات الصوت</label>
+              <input type="text" id="audioPath" value="audio/numbers/">
+            </div>
+            <div class="form-group">
+              <label>مسار ملفات الفيديو</label>
+              <input type="text" id="mediaPath" value="media/videos/">
+            </div>
+            <div class="form-group">
+              <label>تفعيل الذاكرة المؤقتة</label>
+              <select id="cacheEnabled">
+                <option value="true">نعم</option>
+                <option value="false">لا</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="saveStorageSettings()">💾 حفظ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clinics Section -->
+      <div id="clinics" class="admin-content">
+        <h2>🏥 إدارة العيادات</h2>
+        <div style="margin-bottom: 1.5rem;">
+          <button class="btn btn-primary" onclick="showAddClinicForm()">➕ إضافة عيادة جديدة</button>
+        </div>
+        <div class="table-container">
+          <table id="clinicsTable">
+            <thead>
+              <tr>
+                <th>الرقم</th>
+                <th>الاسم</th>
+                <th>الرقم الحالي</th>
+                <th>الحالة</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="clinicsTableBody">
+              <!-- Will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Screens Section -->
+      <div id="screens" class="admin-content">
+        <h2>📺 إدارة الشاشات</h2>
+        <div style="margin-bottom: 1.5rem;">
+          <button class="btn btn-primary" onclick="showAddScreenForm()">➕ إضافة شاشة جديدة</button>
+        </div>
+        <div class="table-container">
+          <table id="screensTable">
+            <thead>
+              <tr>
+                <th>الرقم</th>
+                <th>الاسم</th>
+                <th>العيادات المسندة</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="screensTableBody">
+              <!-- Will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Calls Settings Section -->
+      <div id="calls" class="admin-content">
+        <h2>🔊 إعدادات النداء</h2>
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h3>نداء عميل معين</h3>
+            <div class="form-group">
+              <label>اختر العيادة</label>
+              <select id="callClinic">
+                <option value="">-- اختر عيادة --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>رقم العميل</label>
+              <input type="number" id="callCustomerNumber" min="1">
+            </div>
+            <button class="btn btn-primary" onclick="callCustomer()">📢 نداء</button>
+          </div>
+
+          <div class="settings-card">
+            <h3>تنبيه طوارئ</h3>
+            <div class="form-group">
+              <label>اختر العيادة</label>
+              <select id="emergencyClinic">
+                <option value="">-- اختر عيادة --</option>
+              </select>
+            </div>
+            <button class="btn btn-danger" onclick="emergencyAlert()">🚨 تنبيه طوارئ</button>
+          </div>
+
+          <div class="settings-card">
+            <h3>تصفير العيادات</h3>
+            <div class="form-group">
+              <label>اختر العيادة</label>
+              <select id="resetClinic">
+                <option value="">-- جميع العيادات --</option>
+              </select>
+            </div>
+            <button class="btn btn-secondary" onclick="resetClinics()">🔄 تصفير</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctors Section -->
+      <div id="doctors" class="admin-content">
+        <h2>👨‍⚕️ إدارة الأطباء</h2>
+        <div style="margin-bottom: 1.5rem;">
+          <button class="btn btn-primary" onclick="showAddDoctorForm()">➕ إضافة طبيب جديد</button>
+        </div>
+        <div class="table-container">
+          <table id="doctorsTable">
+            <thead>
+              <tr>
+                <th>الرقم</th>
+                <th>الاسم</th>
+                <th>التخصص</th>
+                <th>العيادة</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="doctorsTableBody">
+              <!-- Will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Users Section -->
+      <div id="users" class="admin-content">
+        <h2>👥 إدارة المستخدمين</h2>
+        <div style="margin-bottom: 1.5rem;">
+          <button class="btn btn-primary" onclick="showAddUserForm()">➕ إضافة مستخدم جديد</button>
+        </div>
+        <div class="table-container">
+          <table id="usersTable">
+            <thead>
+              <tr>
+                <th>البريد الإلكتروني</th>
+                <th>الدور</th>
+                <th>تاريخ الإنشاء</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <!-- Will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="../config/constants.js"></script>
+  <script src="../config/firebase-config.js"></script>
+  <script src="../js/firebase-helper.js"></script>
+  <script src="../js/audio-manager.js"></script>
+  <script src="../js/notification-manager.js"></script>
+  <script src="../js/arabic-numbers.js"></script>
+  <script src="../js/admin-logic.js"></script>
+</body>
+</html>
